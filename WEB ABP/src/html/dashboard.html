@@ -379,7 +379,7 @@ async function loadEquipment() {
         console.log('Fetching equipment...');
         const equipmentList = document.querySelector('.equipment-list');
         
-        const response = await fetch('http://localhost:8082/objetos');
+        const response = await fetch('http://172.17.41.30:8082/objetos');
         console.log('Response status:', response.status);
         
         if (!response.ok) {

@@ -326,7 +326,7 @@
                     // Log the request for debugging
                     console.log('Sending request with data:', JSON.stringify(persona, null, 2));
 
-                    const response = await fetch('http://localhost:8082/personas', {
+                    const response = await fetch('http://172.17.41.30:8082/personas', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
