@@ -296,70 +296,90 @@
             });
         });
 
+        // Update the fetch request in the form submit handler
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('form');
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                // Validate membership selection
-                const selectedMembership = document.getElementById('selected-membership').value;
-                if (!selectedMembership) {
-                    alert('Por favor, selecciona un plan de membresía');
-                    return;
-                }
-
-                // Get all form values with the correct structure
-                const persona = {
-                    nombre: document.getElementById('nombre').value.trim(),
-                    apellido1: document.getElementById('apellido1').value.trim(),
-                    apellido2: document.getElementById('apellido2').value.trim(),
-                    edad: parseInt(document.getElementById('edad').value),
-                    dni: document.getElementById('dni').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    sexo: document.getElementById('sexo').value,
-                    membresia: {
-                        tipo: selectedMembership.toUpperCase()
-                    }
-                };
-
                 try {
-                    // Log the request for debugging
+                    // Validate membership selection
+                    const selectedMembership = document.getElementById('selected-membership').value;
+                    if (!selectedMembership) {
+                        alert('Por favor, selecciona un plan de membresía');
+                        return;
+                    }
+
+                    // Get all form values with the correct structure
+                    const persona = {
+                        nombre: document.getElementById('nombre').value.trim(),
+                        apellido1: document.getElementById('apellido1').value.trim(),
+                        apellido2: document.getElementById('apellido2').value.trim(),
+                        edad: parseInt(document.getElementById('edad').value),
+                        dni: document.getElementById('dni').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        sexo: document.getElementById('sexo').value,
+                        membresia: {
+                            tipo: selectedMembership.toUpperCase()
+                        }
+                    };
+
+                    // Validate required fields
+                    for (const [key, value] of Object.entries(persona)) {
+                        if (!value && key !== 'apellido2') { // apellido2 is optional
+                            throw new Error(`El campo ${key} es obligatorio`);
+                        }
+                    }
+
                     console.log('Sending request with data:', JSON.stringify(persona, null, 2));
 
                     const response = await fetch('http://172.17.41.30:8082/personas', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Access-Control-Allow-Origin': '*'
                         },
-                        body: JSON.stringify(persona)
+                        body: JSON.stringify(persona),
+                        mode: 'cors',
+                        credentials: 'same-origin'
                     });
 
-                    let responseData;
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        responseData = await response.json();
-                    } else {
-                        responseData = await response.text();
+                    if (!response.ok) {
+                        const contentType = response.headers.get('content-type');
+                        let errorMessage;
+                        
+                        if (contentType && contentType.includes('application/json')) {
+                            const errorData = await response.json();
+                            errorMessage = errorData.message || 'Error desconocido';
+                        } else {
+                            errorMessage = await response.text() || `Error HTTP: ${response.status}`;
+                        }
+                        throw new Error(errorMessage);
                     }
 
-                    console.log('Response:', {
-                        status: response.status,
-                        data: responseData
-                    });
+                    const responseData = await response.json();
+                    console.log('Success:', responseData);
+                    
+                    // Store user data and redirect
+                    sessionStorage.setItem('userData', JSON.stringify(responseData));
+                    alert('¡Registro completado con éxito!');
+                    window.location.href = 'login.html';
 
-                    if (response.ok) {
-                        alert('¡Registro completado con éxito!');
-                        // Store user data for dashboard
-                        sessionStorage.setItem('userData', JSON.stringify(responseData));
-                        // Redirect to dashboard
-                        window.location.href = 'login.html';
-                    } else {
-                        const errorMessage = responseData.message || 'Error desconocido en el servidor';
-                        throw new Error(`Error en el registro: ${errorMessage}`);
-                    }
                 } catch (error) {
-                    console.error('Error completo:', error);
-                    alert(`Error al registrar: ${error.message}`);
+                    console.error('Error details:', {
+                        message: error.message,
+                        stack: error.stack
+                    });
+                    
+                    let errorMessage = 'Error al registrar: ';
+                    if (error.message.includes('Failed to fetch')) {
+                        errorMessage += 'No se pudo conectar con el servidor. Por favor, verifica tu conexión y que el servidor esté funcionando.';
+                    } else {
+                        errorMessage += error.message;
+                    }
+                    
+                    alert(errorMessage);
                 }
             });
         });

@@ -379,7 +379,15 @@ async function loadEquipment() {
         console.log('Fetching equipment...');
         const equipmentList = document.querySelector('.equipment-list');
         
-        const response = await fetch('http://172.17.41.30:8082/objetos');
+        const response = await fetch('http://172.17.41.30:8082/objetos', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+        
         console.log('Response status:', response.status);
         
         if (!response.ok) {
@@ -426,32 +434,36 @@ async function loadEquipment() {
     }
 }
 
-
-// Update the DOMContentLoaded event listener
+// Update the DOMContentLoaded event listener to only load equipment
 document.addEventListener('DOMContentLoaded', async function() {
     try {
-        // Check if user is logged in
         const userData = JSON.parse(sessionStorage.getItem('userData'));
         if (!userData) {
             window.location.href = 'login.html';
             return;
         }
 
-        // Update user name
         document.getElementById('userName').textContent = `${userData.nombre} ${userData.apellido1}`;
-
-        // Load both equipment and classes
-        console.log('Starting data load...');
-        await Promise.all([
-            loadEquipment(),
-            loadClasses()
-        ]);
+        
+        // Load equipment
+        await loadEquipment();
+        
+        // Add logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            try {
+                sessionStorage.removeItem('userData');
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Error during logout:', error);
+                alert('Error al cerrar sesión. Por favor, intenta de nuevo.');
+            }
+        });
         
     } catch (error) {
         console.error('Error in initialization:', error);
     }
 });
-
     </script>
 </body>
 </html>
