@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+        --primary-color: #a01d1d;
+        --primary-hover: #8a1919;
+        --secondary-color: #2f2a31;
+        --light-bg: #f3f3ef;
+        --dark-text: #2f2a31;
+        --light-text: #ffffff;
+        --accent-blue: #46b4ca;
+        --border-color: #e0e0e0;
+        --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .brand-section {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-section video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4);
+        }
+
+        .register-section {
+            flex: 1;
+            padding: 2rem;
+            background-color: var(--light-bg);
+            overflow-y: auto;
+        }
+
+        .register-form {
+            max-width: 800px;  /* Increased width to accommodate columns */
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+
+        .logo-container img {
+            height: 120px; /* Increased from 60px to 120px */
+            width: auto;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #b4b4b486;
+            border-radius: 4px;
+        }
+
+        /* Make membership section full width */
+        .membership-section {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+        }
+
+        /* Adjust card sizes for the new layout */
+        .membership-cards {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .membership-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .membership-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .membership-card.selected {
+            border-color: var(--primary-color);
+            background-color: #f8e5e5;
+        }
+
+        .card-header h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .price {
+            color: var(--dark-text);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .benefits {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .benefits li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .benefits i {
+            color: var(--primary-color);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .register-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(160, 29, 29, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="brand-section">
+            <video autoplay muted loop playsinline>
+                <source src="../../assets/videos/inicio_sesion.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="register-section">
+            <div class="register-form">
+                <div class="logo-container">
+                    <img src="../../assets/images/logo.png" alt="Logo de la marca">
+                </div>
+                <h2 style="margin-bottom: 2rem; text-align: center; padding: 20px; color: var(--primary-color); text-transform: uppercase; font-weight: bold;font-weight: 900; margin-top: -50px; font-size: 30px;">Registro</h2>
+                <form>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido1">Primer Apellido</label>
+                            <input type="text" id="apellido1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido2">Segundo Apellido</label>
+                            <input type="text" id="apellido2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edad">Edad</label>
+                            <input type="number" id="edad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dni">DNI</label>
+                            <input type="text" id="dni" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sexo">Sexo</label>
+                            <select id="sexo" required>
+                                <option value="MASCULINO">Masculino</option>
+                                <option value="FEMENINO">Femenino</option>
+                            </select>
+                        </div>
+
+                        <div class="membership-section">
+                            <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Selecciona tu membresía</h3>
+                            <input type="hidden" id="selected-membership" name="membership" required>
+                            <div class="membership-cards">
+                                <div class="membership-card" data-membership="comfort">
+                                    <div class="card-header">
+                                        <h3>COMFORT</h3>
+                                        <div class="price">29,99€<span style="font-size: 1rem">/mes</span></div>
+                                    </div>
+                                    <div class="benefits">
+                                        <li><i class="fas fa-check-circle"></i> Entrena en tu club favorito</li>
+                                        <li><i class="fas fa-check-circle"></i> App de entrenamiento GXR</li>
+                                        <li><i class="fas fa-check-circle"></i> Go For it coaching</li>
+                                    </div>
+                                </div>
+
+                                <div class="membership-card" data-membership="premium">
+                                    <div class="card-header">
+                                        <h3>PREMIUM</h3>
+                                        <div class="price">34,99€<span style="font-size: 1rem">/mes</span></div>
+                                    </div>
+                                    <div class="benefits">
+                                        <li><i class="fas fa-check-circle"></i> Todos los clubes de España</li>
+                                        <li><i class="fas fa-check-circle"></i> Invita a 4 amigos/mes</li>
+                                        <li><i class="fas fa-check-circle"></i> Acceso a duchas premium</li>
+                                    </div>
+                                </div>
+
+                                <div class="membership-card" data-membership="ultimate">
+                                    <div class="card-header">
+                                        <h3>ULTIMATE</h3>
+                                        <div class="price">49,99€<span style="font-size: 1rem">/mes</span></div>
+                                    </div>
+                                    <div class="benefits">
+                                        <li><i class="fas fa-check-circle"></i> Todos los clubes de Europa</li>
+                                        <li><i class="fas fa-check-circle"></i> Invitaciones ilimitadas</li>
+                                        <li><i class="fas fa-check-circle"></i> Acceso VIP total</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p></p>
+                    <a href="login.html">Iniciar Sesion</a>
+                    <button type="submit" class="register-btn">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.membership-card');
+            const membershipInput = document.getElementById('selected-membership');
+
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove selected class from all cards
+                    cards.forEach(c => c.classList.remove('selected'));
+                    // Add selected class to clicked card
+                    this.classList.add('selected');
+                    // Update hidden input value
+                    membershipInput.value = this.getAttribute('data-membership');
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                // Validate membership selection
+                const selectedMembership = document.getElementById('selected-membership').value;
+                if (!selectedMembership) {
+                    alert('Por favor, selecciona un plan de membresía');
+                    return;
+                }
+
+                // Get all form values with the correct structure
+                const persona = {
+                    nombre: document.getElementById('nombre').value.trim(),
+                    apellido1: document.getElementById('apellido1').value.trim(),
+                    apellido2: document.getElementById('apellido2').value.trim(),
+                    edad: parseInt(document.getElementById('edad').value),
+                    dni: document.getElementById('dni').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    sexo: document.getElementById('sexo').value,
+                    membresia: {
+                        tipo: selectedMembership.toUpperCase()
+                    }
+                };
+
+                try {
+                    // Log the request for debugging
+                    console.log('Sending request with data:', JSON.stringify(persona, null, 2));
+
+                    const response = await fetch('http://localhost:8082/personas', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(persona)
+                    });
+
+                    let responseData;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        responseData = await response.json();
+                    } else {
+                        responseData = await response.text();
+                    }
+
+                    console.log('Response:', {
+                        status: response.status,
+                        data: responseData
+                    });
+
+                    if (response.ok) {
+                        alert('¡Registro completado con éxito!');
+                        // Store user data for dashboard
+                        sessionStorage.setItem('userData', JSON.stringify(responseData));
+                        // Redirect to dashboard
+                        window.location.href = 'login.html';
+                    } else {
+                        const errorMessage = responseData.message || 'Error desconocido en el servidor';
+                        throw new Error(`Error en el registro: ${errorMessage}`);
+                    }
+                } catch (error) {
+                    console.error('Error completo:', error);
+                    alert(`Error al registrar: ${error.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
